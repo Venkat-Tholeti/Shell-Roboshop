@@ -8,7 +8,7 @@ DOMAIN_NAME="devopsaws.store"
 
 for instance in ${INSTANCES[@]}
 do  
-  INSTANCE_ID=$(aws ec2 run-instances --image-id ami-0220d79f3f480ecf5 --instance-type t2.micro --security-group-ids sg-0e24fb4b2e1f13c94 --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=$instance}]' --query 'Instances[0].InstanceId' --output text)
+  INSTANCE_ID=$(aws ec2 run-instances --image-id ami-0220d79f3f480ecf5 --instance-type t3.micro --security-group-ids sg-0e24fb4b2e1f13c94 --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=$instance}]' --query 'Instances[0].InstanceId' --output text)
 
   if [ $instance != "frontend" ]
   then
@@ -19,20 +19,19 @@ do
   echo "$instance ip address is $IP"
 
   aws route53 change-resource-record-sets \
-    --hosted-zone-id $ZONE_ID \
-    --change-batch '
-    {
-        "Comment": "Creating or Updating a record set for cognito endpoint"
-        ,"Changes": [{
-        "Action"              : "UPSERT"   #IT WILL CREATE IF NOT PRESENT, IT WILL UPDATE IF PRESENT
-        ,"ResourceRecordSet"  : {
-            "Name"              : "'$instance'.'$DOMAIN_NAME'"
-            ,"Type"             : "A"
-            ,"TTL"              : 1
-            ,"ResourceRecords"  : [{
-                "Value"         : "'$IP'"
-            }] 
-        }
+  --hosted-zone-id $ZONE_ID \
+  --change-batch '{
+    "Comment": "Creating or Updating record",
+    "Changes": [{
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "'$instance'.'$DOMAIN_NAME'",
+        "Type": "A",
+        "TTL": 1,
+        "ResourceRecords": [{
+          "Value": "'$IP'"
         }]
-    }'   
+      }
+    }]
+  }'  
 done
