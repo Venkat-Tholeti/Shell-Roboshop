@@ -50,7 +50,7 @@ then
     useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
     VALIDATE $? "Adding Roboshop User"
 else
-    echo -e "System User Roboshop Exists $Y SKIPPING $N"
+    echo -e "$Y System User Roboshop Exists  SKIPPING $N"
 fi
 
 mkdir -p /app 
