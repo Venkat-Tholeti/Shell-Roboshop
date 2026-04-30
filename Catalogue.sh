@@ -38,7 +38,7 @@ VALIDATE(){
 dnf module disable nodejs -y &>>$LOG_FILE
 VALIDATE $? "Disabling Nodejs"
 
-dnf module enable nodejs:20 -y
+dnf module enable nodejs:20 -y &>>$LOG_FILE
 VALIDATE $? "Nodejs Enable"
 
 dnf install nodejs -y &>>$LOG_FILE
@@ -50,9 +50,9 @@ VALIDATE $? "Adding Roboshop User"
 mkdir /app 
 VALIDATE $? "Creating APP Directory"
 
-curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
+curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$LOG_FILE
 cd /app 
-unzip /tmp/catalogue.zip
+unzip /tmp/catalogue.zip &>>$LOG_FILE
 VALIDATE $? "Downloading the application code to created app directory"
 
 cd /app 
