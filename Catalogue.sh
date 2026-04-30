@@ -45,12 +45,12 @@ dnf install nodejs -y &>>$LOG_FILE
 VALIDATE $? "Installing NodeJs"
 
 id roboshop
-if [$? -ne 0]
+if [ $? -ne 0 ]
 then
     useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
     VALIDATE $? "Adding Roboshop User"
 else
-    echo -e "System User Roboshop Exists  $Y SKIPPING"
+    echo -e "System User Roboshop Exists  $Y SKIPPING $N"
 fi
 
 mkdir -p /app 
