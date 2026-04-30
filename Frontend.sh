@@ -55,5 +55,5 @@ rm -rf /etc/nginx/nginx.conf
 cp $SCRIPT_DIRECTORY/nginx.conf /etc/nginx/nginx.conf
 VALIDATE $? "Copying Nginx Conf File"
 
-systemctl restart nginx 
+systemctl restart nginx &>>$LOG_FILE
 VALIDATE $? "Nginx Service restart"
