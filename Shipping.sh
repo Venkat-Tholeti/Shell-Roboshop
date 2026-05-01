@@ -74,16 +74,16 @@ systemctl start shipping
 VALIDATE $? "Daemon Reload, Enable & Starting of shipping"
 
 dnf install mysql -y &>>$LOG_FILE
-VALIDATE &? "Mysql Client Installation"
+VALIDATE $? "Mysql Client Installation"
 
 mysql -h mysql.devopsaws.store -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/schema.sql &>>$LOG_FILE
 mysql -h mysql.devopsaws.store -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/app-user.sql &>>$LOG_FILE
 mysql -h mysql.devopsaws.store -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/master-data.sql &>>$LOG_FILE
-VALIDATE &? "Load the schema"
+VALIDATE $? "Load the schema"
 
 
 systemctl restart shipping
-VALIDATE &? "Restart Shipping"
+VALIDATE $? "Restart Shipping"
 
 END_TIME=$(date +%s)
 TOTAL_TIME=$(( $END_TIME - $START_TIME ))
