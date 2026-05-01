@@ -60,7 +60,7 @@ unzip /tmp/shipping.zip &>>$LOG_FILE
 VALIDATE $? "Downloading the application code to created app directory"
 
 cd /app 
-mvn clean package 
+mvn clean package &>>$LOG_FILE
 mv target/shipping-1.0.jar shipping.jar  &>>$LOG_FILE
 VALIDATE $? "Downloading the dependencies"
 
