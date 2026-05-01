@@ -51,6 +51,9 @@ NodeJs_Setup(){
     dnf install nodejs -y &>>$LOG_FILE
     VALIDATE $? "Installing NodeJs"
 
+    npm install &>>$LOG_FILE
+    VALIDATE $? "Downloading the dependencies"
+
 }
 
 Roboshop_User(){
@@ -74,9 +77,6 @@ app_setup(){
     unzip /tmp/$app_name.zip &>>$LOG_FILE
     VALIDATE $? "Downloading the application code to created app directory"
 
-    cd /app 
-    npm install &>>$LOG_FILE
-    VALIDATE $? "Downloading the dependencies"
 
     #HERE WE WILL BE IN APP DIRECTORY FROM ABOVE COMMAND, but our service is in our home directory, so we have written SCRIPT directory in the starting and gave $PWD and stored that value
     cp $SCRIPT_DIRECTORY/$app_name.service /etc/systemd/system/$app_name.service

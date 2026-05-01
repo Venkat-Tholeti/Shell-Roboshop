@@ -3,6 +3,8 @@
 source ./Common.sh
 app_name=catalogue
 
+check_root
+
 NodeJs_Setup
 
 Roboshop_User
