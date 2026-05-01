@@ -35,6 +35,8 @@ VALIDATE(){
   fi
 
 }
+echo "Please Enter Root password OF MYSQL"
+read -s MYSQL_ROOT_PASSWORD 
 
 dnf install maven -y &>>$LOG_FILE
 VALIDATE $? "Installing Maven"
@@ -74,9 +76,9 @@ VALIDATE $? "Daemon Reload, Enable & Starting of shipping"
 dnf install mysql -y &>>$LOG_FILE
 VALIDATE &? "Mysql Client Installation"
 
-mysql -h mysql.devopsaws.store -uroot -pRoboShop@1 < /app/db/schema.sql &>>$LOG_FILE
-mysql -h mysql.devopsaws.store -uroot -pRoboShop@1 < /app/db/app-user.sql &>>$LOG_FILE
-mysql -h mysql.devopsaws.store -uroot -pRoboShop@1 < /app/db/master-data.sql &>>$LOG_FILE
+mysql -h mysql.devopsaws.store -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/schema.sql &>>$LOG_FILE
+mysql -h mysql.devopsaws.store -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/app-user.sql &>>$LOG_FILE
+mysql -h mysql.devopsaws.store -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/master-data.sql &>>$LOG_FILE
 VALIDATE &? "Load the schema"
 
 
