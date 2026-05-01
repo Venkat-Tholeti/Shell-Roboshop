@@ -57,10 +57,10 @@ fi
 mkdir -p /app 
 VALIDATE $? "Creating APP Directory"
 
-curl -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip &>>$LOG_FILE
+curl -o /tmp/cart.zip https://roboshop-artifacts.s3.amazonaws.com/cart-v3.zip &>>$LOG_FILE
 rm -rf /app/*
 cd /app 
-unzip /tmp/user.zip &>>$LOG_FILE
+unzip /tmp/cart.zip &>>$LOG_FILE
 VALIDATE $? "Downloading the application code to created app directory"
 
 cd /app 
@@ -68,13 +68,13 @@ npm install &>>$LOG_FILE
 VALIDATE $? "Downloading the dependencies"
 
 #HERE WE WILL BE IN APP DIRECTORY FROM ABOVE COMMAND, but our service is in our home directory, so we have written SCRIPT directory in the starting and gave $PWD and stored that value
-cp $SCRIPT_DIRECTORY/user.service /etc/systemd/system/user.service
-VALIDATE $? "Copying Of user services"
+cp $SCRIPT_DIRECTORY/cart.service /etc/systemd/system/cart.service
+VALIDATE $? "Copying Of cart services"
 
 systemctl daemon-reload
-systemctl enable user 
-systemctl start user
-VALIDATE $? "Daemon Reload, Enable & Starting of User"
+systemctl enable cart 
+systemctl start cart
+VALIDATE $? "Daemon Reload, Enable & Starting of cart"
 
 END_TIME=$(date +%s)
 TOTAL_TIME=$(( $END_TIME - $START_TIME ))
