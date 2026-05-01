@@ -40,7 +40,7 @@ read -s RabbitMq_PASSWORD
 cp rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo
 VALIDATE $? "Rabbitmq Repo Copy"
 
-dnf install rabbitmq-server -y
+dnf install rabbitmq-server -y &>>$LOG_FILE
 VALIDATE $? "Installation Of Rabbitmq"
 
 systemctl enable rabbitmq-server
