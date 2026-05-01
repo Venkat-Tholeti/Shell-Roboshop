@@ -39,6 +39,58 @@ VALIDATE(){
 
 }
 
+
+NodeJs_Setup(){
+    
+    dnf module disable nodejs -y &>>$LOG_FILE
+    VALIDATE $? "Disabling Nodejs"
+
+    dnf module enable nodejs:20 -y &>>$LOG_FILE
+    VALIDATE $? "Nodejs Enable"
+
+    dnf install nodejs -y &>>$LOG_FILE
+    VALIDATE $? "Installing NodeJs"
+
+}
+
+Roboshop_User(){
+    id roboshop
+    if [ $? -ne 0 ]
+    then
+        useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+        VALIDATE $? "Adding Roboshop User"
+    else
+        echo -e "System User Roboshop Exists  $Y SKIPPING $N"
+    fi
+}
+
+app_setup(){
+    mkdir -p /app 
+    VALIDATE $? "Creating APP Directory"
+
+    curl -o /tmp/$app_name.zip https://roboshop-artifacts.s3.amazonaws.com/$app_name-v3.zip &>>$LOG_FILE
+    rm -rf /app/*
+    cd /app 
+    unzip /tmp/$app_name.zip &>>$LOG_FILE
+    VALIDATE $? "Downloading the application code to created app directory"
+
+    cd /app 
+    npm install &>>$LOG_FILE
+    VALIDATE $? "Downloading the dependencies"
+
+    #HERE WE WILL BE IN APP DIRECTORY FROM ABOVE COMMAND, but our service is in our home directory, so we have written SCRIPT directory in the starting and gave $PWD and stored that value
+    cp $SCRIPT_DIRECTORY/$app_name.service /etc/systemd/system/$app_name.service
+    VALIDATE $? "Copying Of $app_name services"
+}
+
+Services_Status(){
+    systemctl daemon-reload
+    systemctl enable $app_name 
+    systemctl start $app_name 
+    VALIDATE $? "Daemon Reload, Enable & Starting of $app_name "
+}
+
+
 print_time(){
     END_TIME=$(date +%s)
     TOTAL_TIME=$(( $END_TIME - $START_TIME ))
