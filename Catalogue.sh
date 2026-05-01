@@ -5,11 +5,11 @@ app_name=catalogue
 
 check_root
 
-NodeJs_Setup
-
 Roboshop_User
 
 app_setup
+
+NodeJs_Setup
 
 Services_Status
 
